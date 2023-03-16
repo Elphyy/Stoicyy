@@ -1,3 +1,6 @@
+import os
+import textwrap
+
 import requests
 
 STOIC_API = "https://stoic-quotes.com/api/quote"
@@ -17,16 +20,19 @@ def get_author(json_dict) -> str:
     return json_dict.get('author')
 
 
-def formatting_response(text, author) -> None:  # TODO: add the formatting of the code should be something like the next comment
-    """
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dui risus, laoreet eu eros vitae,
-                interdum fermentum lectus. In hac habitasse platea dictumst. Praesent blandit.
+def formatting_response(text, author) -> None:
+    terminal_width = os.get_terminal_size().columns - 1
 
-                                            ~~~ AUTHOR ~~~
-    """
+    wrapped_text = textwrap.wrap(text)
+    for lines in wrapped_text:
+        print(lines.center(terminal_width))
+
+    author = f'~~~ {author} ~~~'
+    formatted_author = author.center(terminal_width)
+    print(f'\n{formatted_author}')
 
 
-def main():
+def main() -> None:
     call = call_api()
     formatting_response(get_text(call), get_author(call))
 
